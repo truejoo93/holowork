@@ -6,7 +6,7 @@
 .achievementPanel{padding:16px}.achievementGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.achievementCard{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fbfdff}.achievementTop{display:flex;justify-content:space-between;align-items:center;gap:8px}.achievementTitle{font-weight:900}.cubeLine{display:flex;align-items:center;gap:6px;color:#087b63;font-size:13px;font-weight:800;margin-top:7px}.cubeIcon{width:25px;height:25px;object-fit:contain}.achievementBar{height:7px;background:#e8edf4;border-radius:99px;overflow:hidden;margin-top:10px}.achievementBar i{display:block;height:100%;background:linear-gradient(90deg,#14b88f,#51e3a9);border-radius:99px}.achievementTotals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:13px}.totalCard{border-radius:14px;padding:14px;background:#eff7ff;text-align:center}.totalCard b{display:block;font-size:20px;margin-top:4px}.projection{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}.projection input{width:72px!important}.projectionResult{color:#087b63}@media(max-width:800px){.achievementGrid,.achievementTotals{grid-template-columns:1fr 1fr}}@media(max-width:500px){.achievementGrid,.achievementTotals{grid-template-columns:1fr}}
 .card.suggested{border:3px solid var(--blue);box-shadow:0 8px 25px #2374e12b}.suggestedMark{position:absolute;top:7px;right:7px;background:var(--blue);color:#fff;border-radius:99px;padding:3px 7px;font-size:10px;font-weight:900}.sendBox{padding:16px;margin:22px 0 12px;border-left:6px solid var(--blue);display:grid;grid-template-columns:1fr auto;column-gap:18px;align-items:center}.sendBox h3{margin:0 0 4px}.sendButtons{display:flex;gap:8px;align-items:center;flex-wrap:wrap;grid-column:2;grid-row:1 / span 2}.lastSent{font-size:11px;color:var(--muted);margin-top:7px;grid-column:1 / -1}.duration{display:inline-block;border-radius:99px;padding:3px 8px;background:#eef2f7;font-size:11px;font-weight:900}.projectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}.projectionUnit{border-radius:10px;background:#fff;padding:10px}.projectionUnit label{display:block;font-size:12px}.projectionUnit b{color:#087b63}@media(max-width:700px){.projectionGrid{grid-template-columns:1fr}.sendBox{grid-template-columns:1fr}.sendButtons{grid-column:1;grid-row:auto;margin-top:12px}.lastSent{grid-column:1}}
 .rewardPanel{padding:16px;overflow:hidden}.rewardTableWrap{overflow-x:auto}.rewardTable{width:100%;min-width:940px;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}.rewardTable th,.rewardTable td{padding:12px 9px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}.rewardTable th:last-child,.rewardTable td:last-child{border-right:0}.rewardTable tr:last-child td,.rewardTable tr:last-child th{border-bottom:0}.rewardTable thead th{background:#f4f8fd}.rewardTable thead tr:first-child th{font-size:15px;color:var(--ink);font-weight:900}.rewardTable thead tr:nth-child(2) th{background:#f9fbfe}.rewardTable tbody th{background:#fbfdff;white-space:nowrap;font-size:17px}.rewardTable td{font-size:16px;font-weight:900;color:#1859a9}.rewardTable .unknown{color:#9aa4b2;font-size:13px;font-weight:650}.rewardSubhead{min-width:88px}.rewardIcons{display:flex;align-items:center;justify-content:center;gap:2px;flex-wrap:wrap}.rewardIcon{width:32px;height:32px;object-fit:contain}.rewardTip{margin-top:14px;padding:15px 16px;border:1px solid #cfe2ff;border-left:5px solid var(--blue);border-radius:13px;background:#f5f9ff}.rewardTip h3{margin:0 0 7px;font-size:15px}.rewardTip p{margin:5px 0;color:#43516a;font-size:13px;line-height:1.6}.rewardExamples{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.rewardExample{padding:8px 10px;border-radius:9px;background:#fff;border:1px solid #dce8f8;font-size:12px}.rewardExample b{color:#1859a9}.rewardSource{margin-top:12px;text-align:right}.rewardSource a{color:var(--blue);text-decoration:none}
-</style></head><body><main class="wrap"><div class="top"><div><h1>홀로워크 업적 추천기</h1><div class="sub">다음 업적까지 가장 가까운 멤버를 자동 추천합니다.</div></div><div id="summary" class="meta"></div></div>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body><main class="wrap"><div class="top"><div><h1>홀로워크 업적 추천기</h1><div class="sub">다음 업적까지 가장 가까운 멤버를 자동 추천합니다.</div></div><div id="summary" class="meta"></div></div>
 <section class="panel toolbar"><button id="openWizard">초기 데이터 빠른 입력</button><span style="flex:1"></span><button id="export">백업 내보내기</button><label class="fileBtn">백업 불러오기<input id="import" type="file" accept="application/json" hidden></label><button id="reset" class="danger">초기값 복원</button></section>
 <div class="sectionHead"><h2>홀로워크 출전 멤버 <span id="fixedCount"></span></h2><span class="sub">행을 선택해 고정하세요. 파란 외곽선은 빈자리를 채운 자동 추천 멤버입니다.</span></div><section id="fixedRows"></section>
 <div class="sectionHead"><h2>업적 · 그린 큐브 현황</h2><span class="sub">8시간(노래 방송·게임 실황·물고기 낚시)과 10시간 출전 구성을 나누어 예상합니다.</span></div><section class="panel achievementPanel"><div id="achievementGrid" class="achievementGrid"></div><div class="achievementTotals"><div class="totalCard">달성한 업적<b id="achievementTotal"></b></div><div class="totalCard">획득한 그린 큐브<b id="cubeTotal"></b></div><div class="totalCard projection"><div class="projectionGrid"><div class="projectionUnit"><label>8시간 구성 <input id="projection8" type="number" min="1" value="3">회 후</label><b id="projectionCube8"></b><small id="rosterInfo8" class="sub"></small></div><div class="projectionUnit"><label>10시간 구성 <input id="projection10" type="number" min="1" value="2">회 후</label><b id="projectionCube10"></b><small id="rosterInfo10" class="sub"></small></div></div></div></div></section>
@@ -48,16 +48,99 @@
 </section></main>
 <div id="wizardOverlay" class="wizardOverlay" role="dialog" aria-modal="true" aria-labelledby="wizardTitle"><section class="panel wizard"><div class="top"><b id="wizardTitle">초기 데이터 빠른 입력</b><span id="wizardPosition" class="meta"></span></div><div class="wizardProgress"><i id="wizardBar"></i></div><img id="wizardImage" class="wizardPortrait" alt=""><div id="wizardName" class="wizardName"></div><div id="wizardEn" class="en"></div><input id="wizardInput" class="wizardInput" type="number" min="0" inputmode="numeric"><div class="wizardHint">횟수를 입력하고 Enter를 누르면 다음 멤버로 넘어갑니다.</div><div class="wizardActions"><button id="wizardPrev">이전</button><button id="wizardNext" class="primary">저장 후 다음</button><button id="wizardClose">입력 종료</button></div></section></div><div id="toast" class="toast"></div>
 <script>
-const MS=[1,5,10,30,50,100,200,300,400],REWARDS={1:20,5:20,10:20,30:30,50:30,100:30,200:40,300:40,400:40},KEY='holowork-recommender-local-v2';
-const RAW=[
+const MS=[1,5,10,30,50,100,200,300,400],
+REWARDS={1:20,5:20,10:20,30:30,50:30,100:30,200:40,300:40,400:40},
+KEY='holowork-recommender-local-v2';
+
+const SUPABASE_URL='https://qxtrhobnhwnimijxcjor.supabase.co';
+const SUPABASE_KEY='sb_publishable_8Q7XOi_HnWcdl-iBhoJjCg_4TbjSu6G';
+
+const supabaseClient=window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);const RAW=[
 ['JP','토키노 소라','Tokino Sora',0],['JP','로보코 씨','Robocosan',0],['JP','AZKi','AZKi',0],['JP','사쿠라 미코','Sakura Miko',0],['JP','호시마치 스이세이','Hoshimachi Suisei',0],['JP','아키 로젠탈','Aki Rosenthal',0],['JP','아카이 하아토','Akai Haato',0],['JP','시라카미 후부키','Shirakami Fubuki',0],['JP','나츠이로 마츠리','Natsuiro Matsuri',0],['JP','나키리 아야메','Nakiri Ayame',0],['JP','유즈키 초코','Yuzuki Choco',0],['JP','오오조라 스바루','Oozora Subaru',0],['JP','오오카미 미오','Ookami Mio',0],['JP','네코마타 오카유','Nekomata Okayu',0],['JP','이누가미 코로네','Inugami Korone',0],['JP','우사다 페코라','Usada Pekora',0],['JP','시라누이 후레아','Shiranui Flare',0],['JP','시로가네 노엘','Shirogane Noel',0],['JP','호쇼 마린','Houshou Marine',0],['JP','츠노마키 와타메','Tsunomaki Watame',0],['JP','토코야미 토와','Tokoyami Towa',0],['JP','히메모리 루나','Himemori Luna',0],['JP','유키하나 라미','Yukihana Lamy',0],['JP','모모스즈 네네','Momosuzu Nene',0],['JP','시시로 보탄','Shishiro Botan',0],['JP','오마루 폴카','Omaru Polka',0],['JP','라플라스 다크니스','La+ Darknesss',0],['JP','타카네 루이','Takane Lui',0],['JP','하쿠이 코요리','Hakui Koyori',0],['JP','카자마 이로하','Kazama Iroha',0],['ID','아윤다 리스','Ayunda Risu',0],['ID','무나 호시노바','Moona Hoshinova',0],['ID','아이라니 이오피프틴','Airani Iofifteen',0],['ID','쿠레이지 올리','Kureiji Ollie',0],['ID','아냐 멜핏사','Anya Melfissa',0],['ID','파볼리아 레이네','Pavolia Reine',0],['ID','베스티아 제타','Vestia Zeta',0],['ID','카엘라 코발스키아','Kaela Kovalskia',0],['ID','코보 카나에루','Kobo Kanaeru',0],['EN','모리 칼리오페','Mori Calliope',0],['EN','타카나시 키아라','Takanashi Kiara',0],['EN','니노마에 이나니스',"Ninomae Ina'nis",0],['EN','IRyS','IRyS',0],['EN','오로 크로니','Ouro Kronii',0],['EN','하코스 벨즈','Hakos Baelz',0],['EN','시오리 노벨라','Shiori Novella',0],['EN','코세키 비쥬','Koseki Bijou',0],['EN','네리사 레이븐크로프트','Nerissa Ravencroft',0],['EN','후와와 어비스가드','Fuwawa Abyssgard',0],['EN','모코코 어비스가드','Mococo Abyssgard',0],['DEV_IS','오토노세 카나데','Otonose Kanade',0],['DEV_IS','이치조 리리카','Ichijou Ririka',0],['DEV_IS','주우후테이 라덴','Juufuutei Raden',0],['DEV_IS','토도로키 하지메','Todoroki Hajime',0]];
 const TYPES=[['song','노래 방송'],['game','게임 실황'],['fish','물고기 낚시'],['record','녹음'],['chat','잡담 방송']];
 const INITIAL=RAW.map((x,i)=>({id:i+1,group:x[0],name:x[1],en:x[2],count:x[3],fixedType:null,image:`images/${String(i+1).padStart(2,'0')}.png`}));
 let state=load(),current=[];
+let supabaseLoaded=false;
 function clone(){return JSON.parse(JSON.stringify(INITIAL))}
 function normalize(x){x.members.forEach(m=>{if(m.fixedType===undefined)m.fixedType=m.excluded?'song':null;delete m.excluded});TYPES.forEach(([type])=>x.members.filter(m=>m.fixedType===type).slice(5).forEach(m=>m.fixedType=null));x.selectedType=x.selectedType||'song';x.lastSend8=x.lastSend8||null;x.lastSend10=x.lastSend10||null;x.lastSent8=x.lastSent8||null;x.lastSent10=x.lastSent10||null;x.projection8=Math.max(1,+x.projection8||3);x.projection10=Math.max(1,+x.projection10||2);delete x.lastSend;delete x.n;delete x.projectionRuns;return x}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x.members.length!==54)throw 0;return normalize(x)}catch{return{members:clone(),selectedType:'song',lastSend8:null,lastSend10:null,lastSent8:null,lastSent10:null,projection8:3,projection10:2}}}
-function save(){localStorage.setItem(KEY,JSON.stringify(state))} function next(c){return MS.find(x=>x>c)??null} function dist(m){const x=next(m.count);return x===null?Infinity:x-m.count}
+function load(){
+  try{
+    const x=JSON.parse(localStorage.getItem(KEY));
+    if(x.members.length!==54)throw 0;
+    return normalize(x);
+  }catch{
+    return {
+      members:clone(),
+      selectedType:'song',
+      lastSend8:null,
+      lastSend10:null,
+      lastSent8:null,
+      lastSent10:null,
+      projection8:3,
+      projection10:2
+    };
+  }
+}
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(state));
+
+  if(supabaseLoaded){
+    saveCountsToSupabase();
+  }
+}
+async function saveCountsToSupabase(){
+  const rows=state.members.map(m=>({
+    member_id:String(m.id),
+    count:m.count
+  }));
+
+  const {error}=await supabaseClient
+    .from('member_progress')
+    .upsert(rows,{onConflict:'member_id'});
+
+  if(error){
+    console.error('Supabase 저장 실패:',error);
+    notice('Supabase 저장에 실패했습니다.');
+  }
+}
+async function loadCountsFromSupabase(){
+  const {data,error}=await supabaseClient
+    .from('member_progress')
+    .select('member_id,count');
+
+  if(error){
+    console.error('Supabase 불러오기 실패:',error);
+    notice('Supabase 데이터를 불러오지 못했습니다.');
+    return;
+  }
+
+  if(!data || data.length===0){
+    await saveCountsToSupabase();
+    supabaseLoaded=true;
+    render();
+    return;
+  }
+
+  data.forEach(row=>{
+    const member=state.members.find(
+      m=>String(m.id)===String(row.member_id)
+    );
+
+    if(member){
+      member.count=Math.max(0,Number(row.count)||0);
+    }
+  });
+
+  localStorage.setItem(KEY,JSON.stringify(state));
+
+  supabaseLoaded=true;
+
+  render();
+}
+function next(c){return MS.find(x=>x>c)??null} function dist(m){const x=next(m.count);return x===null?Infinity:x-m.count}
 function buildLineups(){const rows={};TYPES.forEach(([type])=>rows[type]=state.members.filter(m=>m.fixedType===type).slice(0,5));const openings=TYPES.reduce((sum,[type])=>sum+5-rows[type].length,0);const candidates=state.members.filter(m=>!m.fixedType&&next(m.count)!==null).map((m,i)=>({...m,_i:i})).sort((a,b)=>dist(a)-dist(b)||a.count-b.count||a._i-b._i).slice(0,openings);const suggestedIds=new Set(candidates.map(m=>m.id));TYPES.forEach(([type])=>{while(rows[type].length<5&&candidates.length)rows[type].push(candidates.shift());rows[type].sort((a,b)=>a.id-b.id)});return{rows,suggestedIds}}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function pic(m){return `<img class="portrait" src="${m.image}" alt="${esc(m.name)}" loading="lazy">`}
@@ -83,6 +166,6 @@ function saveWizardValue(){state.members[wizardIndex].count=Math.max(0,Math.floo
 function closeWizard(){saveWizardValue();document.querySelector('#wizardOverlay').classList.remove('show');render();notice('입력한 데이터를 저장했습니다.')}
 function nextWizard(){saveWizardValue();if(wizardIndex===state.members.length-1){document.querySelector('#wizardOverlay').classList.remove('show');render();notice('54명 데이터 입력을 완료했습니다.');return}wizardIndex++;showWizardMember()}
 document.querySelector('#openWizard').onclick=()=>{wizardIndex=0;document.querySelector('#wizardOverlay').classList.add('show');showWizardMember()};document.querySelector('#wizardNext').onclick=nextWizard;document.querySelector('#wizardPrev').onclick=()=>{saveWizardValue();if(wizardIndex>0){wizardIndex--;showWizardMember()}};document.querySelector('#wizardClose').onclick=closeWizard;document.querySelector('#wizardInput').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();nextWizard()}else if(e.key==='Escape'){e.preventDefault();closeWizard()}};
-document.querySelector('#export').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='holowork-backup.json';a.click();URL.revokeObjectURL(a.href)};document.querySelector('#import').onchange=async e=>{try{const x=normalize(JSON.parse(await e.target.files[0].text()));if(x.members.length!==54)throw 0;state=x;render();notice('백업을 불러왔습니다.')}catch{alert('올바른 백업 파일이 아닙니다.')}e.target.value=''};render();
+document.querySelector('#export').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));a.download='holowork-backup.json';a.click();URL.revokeObjectURL(a.href)};document.querySelector('#import').onchange=async e=>{try{const x=normalize(JSON.parse(await e.target.files[0].text()));if(x.members.length!==54)throw 0;state=x;render();notice('백업을 불러왔습니다.')}catch{alert('올바른 백업 파일이 아닙니다.')}e.target.value=''};render();loadCountsFromSupabase();
 </script></body></html>
 
