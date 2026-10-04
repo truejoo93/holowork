@@ -89,12 +89,14 @@ function save(){
 
   if(supabaseLoaded){
     saveCountsToSupabase();
+    saveAppStateToSupabase();
   }
 }
 async function saveCountsToSupabase(){
   const rows=state.members.map(m=>({
     member_id:String(m.id),
-    count:m.count
+    count:m.count,
+    fixed_type:m.fixedType
   }));
 
   const {error}=await supabaseClient
@@ -102,41 +104,88 @@ async function saveCountsToSupabase(){
     .upsert(rows,{onConflict:'member_id'});
 
   if(error){
-    console.error('Supabase 저장 실패:',error);
-    notice('Supabase 저장에 실패했습니다.');
+    console.error('Supabase 멤버 저장 실패:',error);
+    notice('Supabase 멤버 데이터 저장에 실패했습니다.');
+  }
+}
+async function saveAppStateToSupabase(){
+  const {error}=await supabaseClient
+    .from('app_state')
+    .upsert({
+      id:1,
+      last_send_8:state.lastSend8,
+      last_send_10:state.lastSend10,
+      last_sent_8:state.lastSent8?new Date(state.lastSent8).toISOString():null,
+      last_sent_10:state.lastSent10?new Date(state.lastSent10).toISOString():null
+    },{onConflict:'id'});
+
+  if(error){
+    console.error('Supabase 앱 상태 저장 실패:',error);
+    notice('Supabase 전송 상태 저장에 실패했습니다.');
   }
 }
 async function loadCountsFromSupabase(){
-  const {data,error}=await supabaseClient
+  const memberResult=await supabaseClient
     .from('member_progress')
-    .select('member_id,count');
+    .select('member_id,count,fixed_type');
 
-  if(error){
-    console.error('Supabase 불러오기 실패:',error);
-    notice('Supabase 데이터를 불러오지 못했습니다.');
+  if(memberResult.error){
+    console.error('Supabase 멤버 불러오기 실패:',memberResult.error);
+    notice('Supabase 멤버 데이터를 불러오지 못했습니다.');
     return;
   }
 
-  if(!data || data.length===0){
-    await saveCountsToSupabase();
-    supabaseLoaded=true;
-    render();
+  const appResult=await supabaseClient
+    .from('app_state')
+    .select('last_send_8,last_send_10,last_sent_8,last_sent_10')
+    .eq('id',1)
+    .maybeSingle();
+
+  if(appResult.error){
+    console.error('Supabase 앱 상태 불러오기 실패:',appResult.error);
+    notice('Supabase 전송 상태를 불러오지 못했습니다.');
     return;
   }
 
-  data.forEach(row=>{
-    const member=state.members.find(
-      m=>String(m.id)===String(row.member_id)
-    );
+  const data=memberResult.data;
 
-    if(member){
-      member.count=Math.max(0,Number(row.count)||0);
-    }
-  });
+  if(data && data.length>0){
+    data.forEach(row=>{
+      const member=state.members.find(
+        m=>String(m.id)===String(row.member_id)
+      );
+
+      if(member){
+        member.count=Math.max(0,Number(row.count)||0);
+        member.fixedType=row.fixed_type||null;
+      }
+    });
+  }
+
+  if(appResult.data){
+    state.lastSend8=appResult.data.last_send_8||null;
+    state.lastSend10=appResult.data.last_send_10||null;
+
+    state.lastSent8=appResult.data.last_sent_8
+      ? new Date(appResult.data.last_sent_8).getTime()
+      : null;
+
+    state.lastSent10=appResult.data.last_sent_10
+      ? new Date(appResult.data.last_sent_10).getTime()
+      : null;
+  }
 
   localStorage.setItem(KEY,JSON.stringify(state));
 
   supabaseLoaded=true;
+
+  if(!data || data.length===0){
+    await saveCountsToSupabase();
+  }
+
+  if(!appResult.data){
+    await saveAppStateToSupabase();
+  }
 
   render();
 }
